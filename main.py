@@ -1,7 +1,4 @@
-import openpyxl
 import pandas as pd
-
-
 
 if __name__ == "__main__":
     famille_article = [
@@ -53,5 +50,6 @@ if __name__ == "__main__":
     #Export des données en CSV
     print(data)
 
-    data.to_csv('result/espace_affaire.csv', index=False)
-
+    data.to_csv('result/espace_affaire.csv', index=False, header=False, sep=';')
+    print('Fichier exporté avec succès !')
+    input('')

@@ -5,6 +5,6 @@ ressource/
 # Environnement de travail
 export/*
 !export/README.md
-
 result/*
 !result/README.md
+build/
