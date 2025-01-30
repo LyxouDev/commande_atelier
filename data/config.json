@@ -1,0 +1,22 @@
+{
+    "famille_article": [
+        "RELAYAGE/MESURE",
+        "AMC",
+        "ARMOIRE",
+        "INFO INDUS",
+        "DIV ATELIER",
+        "ELEC PUISS",
+        "SOFREL"
+    ],
+    "fournisseur": {
+        "rexel": {
+            "nom": "Rexel",
+            "colonne":{
+                "B": "Quantité",
+                "C": "Description du produit",
+                "D": "Réf Fab",
+                "K": "Prix net HT"
+            }
+        }
+    }
+}

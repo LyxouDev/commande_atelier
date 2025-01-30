@@ -1,18 +1,20 @@
 import pandas as pd
+import json
 
 if __name__ == "__main__":
-    famille_article = [
-        "RELAYAGE/MESURE",
-        "AMC",
-        "ARMOIRE",
-        "INFO INDUS",
-        "DIV ATELIER",
-        "ELEC PUISS",
-        "SOFREL"
-    ]
 
-    # Récupération des données utilisées
-    data = pd.read_excel('export/export_rexel.xlsx', usecols="B, C, D, K")
+    # Récupération des données de configuration
+    with open('data/config.json') as json_file:
+        config = json.load(json_file)
+
+    famille_article = config['famille_article']
+
+    usecols = ",".join([key for key, val in config['fournisseur']["rexel"]["colonne"].items()])
+
+    print(usecols)
+
+    # Récupération des données utilisées du fichier d'export
+    data = pd.read_excel('export/export.xlsx', usecols=usecols)
 
     # Ajout des nouvelles colonnes
     vide  = pd.Series([''] * len(data))
