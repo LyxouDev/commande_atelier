@@ -1,22 +1,21 @@
 import pandas as pd
 import json
 
+from module.rexel import *
+
 if __name__ == "__main__":
 
     # Récupération des données de configuration
     with open('data/config.json') as config_file:
         config = json.load(config_file)
-
-    famille_article = config['famille_article']
-    usecols = ",".join([key for key, val in config['fournisseur']["rexel"]["colonne"].items()])
+        famille_article = config['famille_article']
 
     # Récupération du dictionnaire de référence fournisseur
     new_ref = False
-    with open('data/ref_rexel.json') as ref_file:
-        ref_fournisseur = json.load(ref_file)
+    ref_fournisseur = dict_reference(config, 'rexel')
 
     # Récupération des données utilisées du fichier d'export
-    data = pd.read_excel('export/export.xlsx', usecols=usecols)
+    data = read_data(config, 'rexel')
 
     # Ajout des nouvelles colonnes
     vide  = pd.Series([''] * len(data))
@@ -26,16 +25,19 @@ if __name__ == "__main__":
 
     familles_input = list()
 
-    for i in range(len(famille_article)):
-        print(i+1, '-', famille_article[i])
-
     for i in range(len(data)):
         if data['Réf Fab'][i] in ref_fournisseur:
             input_temp = ref_fournisseur[data['Réf Fab'][i]]
         else:
             input_temp = input('Famille pour l\'article ' + data['Réf Fab'][i] + ' - ' + data['Description du produit'][i] + ': ')
             ref_fournisseur[data['Réf Fab'][i]] = input_temp
-            new_ref = True
+
+            # Si détection de la première nouvelle référence
+            if not new_ref:
+                for i in range(len(famille_article)):
+                    print(i+1, '-', famille_article[i])
+
+                new_ref = True
         try:
             familles_input.append(famille_article[int(input_temp)-1])
         except:
@@ -63,8 +65,7 @@ if __name__ == "__main__":
 
     # Sauvegarde des nouvelles références fournisseur
     if new_ref:
-        with open('data/ref_rexel.json', 'w') as ref_file:
-            json.dump(ref_fournisseur, ref_file)
+        save_ref(config, 'rexel', ref_fournisseur)
 
     print('Fichier exporté avec succès !')
     input('')
