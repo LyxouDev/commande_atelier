@@ -1,7 +1,7 @@
 import pandas as pd
 import json
 
-from module.rexel import *
+import module.fournisseur as _frnssr
 
 if __name__ == "__main__":
 
@@ -12,10 +12,10 @@ if __name__ == "__main__":
 
     # Récupération du dictionnaire de référence fournisseur
     new_ref = False
-    ref_fournisseur = dict_reference(config, 'rexel')
+    ref_fournisseur = _frnssr.dict_reference('rexel')
 
     # Récupération des données utilisées du fichier d'export
-    data = read_data(config, 'rexel')
+    data, intitules = _frnssr.read_data(config, 'rexel')
 
     # Ajout des nouvelles colonnes
     vide  = pd.Series([''] * len(data))
@@ -26,11 +26,11 @@ if __name__ == "__main__":
     familles_input = list()
 
     for i in range(len(data)):
-        if data['Réf Fab'][i] in ref_fournisseur:
-            input_temp = ref_fournisseur[data['Réf Fab'][i]]
+        if data[intitules[2]][i] in ref_fournisseur:
+            input_temp = ref_fournisseur[data[intitules[2]][i]]
         else:
-            input_temp = input('Famille pour l\'article ' + data['Réf Fab'][i] + ' - ' + data['Description du produit'][i] + ': ')
-            ref_fournisseur[data['Réf Fab'][i]] = input_temp
+            input_temp = input('Famille pour l\'article ' + data[intitules[2]][i] + ' - ' + data[intitules[1]][i] + ': ')
+            ref_fournisseur[data[intitules[2]][i]] = input_temp
 
             # Si détection de la première nouvelle référence
             if not new_ref:
@@ -47,7 +47,7 @@ if __name__ == "__main__":
 
     #######################
 
-    concat_col = data['Réf Fab'] + ' - ' + data['Description du produit']
+    concat_col = data[intitules[2]] + ' - ' + data[intitules[1]]
 
     data.insert(len(data.columns), 'VIDE_1', vide)
     data.insert(len(data.columns), 'VIDE_2', vide)
@@ -56,7 +56,7 @@ if __name__ == "__main__":
     data.insert(len(data.columns), 'EXEMPLE', concat_col)
 
     # Réorganisation des colonnes
-    data = data[['Réf Fab', 'Description du produit', 'VIDE_1', 'Quantité', 'Prix net HT', 'VIDE_2', 'ACH', 'FAMILLE', 'EXEMPLE']]
+    data = data[[intitules[2], intitules[1], 'VIDE_1', intitules[0], intitules[3], 'VIDE_2', 'ACH', 'FAMILLE', 'EXEMPLE']]
 
     #Export des données en CSV
     print(data)
@@ -65,7 +65,7 @@ if __name__ == "__main__":
 
     # Sauvegarde des nouvelles références fournisseur
     if new_ref:
-        save_ref(config, 'rexel', ref_fournisseur)
+        _frnssr.save_ref(config, 'rexel', ref_fournisseur)
 
     print('Fichier exporté avec succès !')
     input('')

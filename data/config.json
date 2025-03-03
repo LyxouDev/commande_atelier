@@ -11,11 +11,23 @@
     "fournisseur": {
         "rexel": {
             "nom": "Rexel",
-            "colonne":{
-                "B": "Quantité",
-                "C": "Description du produit",
-                "D": "Réf Fab",
-                "K": "Prix net HT"
+            "informations":{
+                "quantite":{
+                    "colonne": "B",
+                    "valeur": "Quantité"
+                },
+                "description":{
+                    "colonne": "C",
+                    "valeur": "Description du produit"
+                },
+                "ref_fab":{
+                    "colonne": "D",
+                    "valeur": "Réf Fab"
+                },
+                "prix":{
+                    "colonne": "K",
+                    "valeur": "Prix net HT"
+                }
             }
         }
     }
