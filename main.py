@@ -10,12 +10,31 @@ if __name__ == "__main__":
         config = json.load(config_file)
         famille_article = config['famille_article']
 
+    # Sélection du fournisseur
+    selection_ok = False
+    while not selection_ok:
+        i = 0
+        list_fournisseur = list()
+        for key, val in config['fournisseur'].items():
+            print(i+1, '-', val['nom'])
+            list_fournisseur.append(key)
+            i += 1
+
+        choix = input('Sélectionner le fournisseur: ')
+        try:
+            choix = int(choix)
+            if choix > 0 and choix <= i:
+                selection_ok = True
+                nom_fournisseur = list_fournisseur[choix-1]
+        except:
+            pass
+
     # Récupération du dictionnaire de référence fournisseur
     new_ref = False
-    ref_fournisseur = _frnssr.dict_reference('rexel')
+    ref_fournisseur = _frnssr.dict_reference(nom_fournisseur)
 
     # Récupération des données utilisées du fichier d'export
-    data, intitules = _frnssr.read_data(config, 'rexel')
+    data, intitules = _frnssr.read_data(config, nom_fournisseur)
 
     # Ajout des nouvelles colonnes
     vide  = pd.Series([''] * len(data))
@@ -29,15 +48,15 @@ if __name__ == "__main__":
         if data[intitules[2]][i] in ref_fournisseur:
             input_temp = ref_fournisseur[data[intitules[2]][i]]
         else:
-            input_temp = input('Famille pour l\'article ' + data[intitules[2]][i] + ' - ' + data[intitules[1]][i] + ': ')
-            ref_fournisseur[data[intitules[2]][i]] = input_temp
-
             # Si détection de la première nouvelle référence
             if not new_ref:
-                for i in range(len(famille_article)):
-                    print(i+1, '-', famille_article[i])
+                for j in range(len(famille_article)):
+                    print(j+1, '-', famille_article[j])
 
                 new_ref = True
+
+            input_temp = input('Famille pour l\'article ' + data[intitules[2]][i] + ' - ' + data[intitules[1]][i] + ': ')
+            ref_fournisseur[data[intitules[2]][i]] = input_temp
         try:
             familles_input.append(famille_article[int(input_temp)-1])
         except:
@@ -65,7 +84,7 @@ if __name__ == "__main__":
 
     # Sauvegarde des nouvelles références fournisseur
     if new_ref:
-        _frnssr.save_ref(config, 'rexel', ref_fournisseur)
+        _frnssr.save_ref(nom_fournisseur, ref_fournisseur)
 
     print('Fichier exporté avec succès !')
     input('')

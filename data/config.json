@@ -29,6 +29,27 @@
                     "valeur": "Prix net HT"
                 }
             }
+        },
+        "import_elec": {
+            "nom": "Import Elec",
+            "informations":{
+                "quantite":{
+                    "colonne": "E",
+                    "valeur": "Quantité"
+                },
+                "description":{
+                    "colonne": "D",
+                    "valeur": "Designation"
+                },
+                "ref_fab":{
+                    "colonne": "A",
+                    "valeur": "Référence"
+                },
+                "prix":{
+                    "colonne": "H",
+                    "valeur": "Prix"
+                }
+            }
         }
     }
 }
