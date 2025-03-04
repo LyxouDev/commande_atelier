@@ -14,10 +14,11 @@ if __name__ == "__main__":
     selection_ok = False
     while not selection_ok:
         i = 0
-        list_fournisseur = list()
+        list_fournisseur, list_extension = list(), list()
         for key, val in config['fournisseur'].items():
             print(i+1, '-', val['nom'])
             list_fournisseur.append(key)
+            list_extension.append(val['extension'])
             i += 1
 
         choix = input('Sélectionner le fournisseur: ')
@@ -26,6 +27,7 @@ if __name__ == "__main__":
             if choix > 0 and choix <= i:
                 selection_ok = True
                 nom_fournisseur = list_fournisseur[choix-1]
+                extension= list_extension[choix-1]
         except:
             pass
 
@@ -34,7 +36,7 @@ if __name__ == "__main__":
     ref_fournisseur = _frnssr.dict_reference(nom_fournisseur)
 
     # Récupération des données utilisées du fichier d'export
-    data, intitules = _frnssr.read_data(config, nom_fournisseur)
+    data, intitules = _frnssr.read_data(config, nom_fournisseur, extension)
 
     # Ajout des nouvelles colonnes
     vide  = pd.Series([''] * len(data))
@@ -45,8 +47,8 @@ if __name__ == "__main__":
     familles_input = list()
 
     for i in range(len(data)):
-        if data[intitules[2]][i] in ref_fournisseur:
-            input_temp = ref_fournisseur[data[intitules[2]][i]]
+        if str(data[intitules[2]][i]) in ref_fournisseur:
+            input_temp = ref_fournisseur[str(data[intitules[2]][i])]
         else:
             # Si détection de la première nouvelle référence
             if not new_ref:
@@ -55,8 +57,8 @@ if __name__ == "__main__":
 
                 new_ref = True
 
-            input_temp = input('Famille pour l\'article ' + data[intitules[2]][i] + ' - ' + data[intitules[1]][i] + ': ')
-            ref_fournisseur[data[intitules[2]][i]] = input_temp
+            input_temp = input('Famille pour l\'article ' + str(data[intitules[2]][i]) + ' - ' + str(data[intitules[1]][i]) + ': ')
+            ref_fournisseur[str(data[intitules[2]][i])] = input_temp
         try:
             familles_input.append(famille_article[int(input_temp)-1])
         except:
@@ -66,7 +68,7 @@ if __name__ == "__main__":
 
     #######################
 
-    concat_col = data[intitules[2]] + ' - ' + data[intitules[1]]
+    concat_col = data[intitules[2]].apply(str) + ' - ' + data[intitules[1]].apply(str)
 
     data.insert(len(data.columns), 'VIDE_1', vide)
     data.insert(len(data.columns), 'VIDE_2', vide)
@@ -80,7 +82,7 @@ if __name__ == "__main__":
     #Export des données en CSV
     print(data)
 
-    data.to_csv('result/espace_affaire.csv', index=False, header=False, sep=';')
+    data.to_csv('export/espace_affaire.csv', index=False, header=False, sep=';')
 
     # Sauvegarde des nouvelles références fournisseur
     if new_ref:

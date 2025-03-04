@@ -11,6 +11,7 @@
     "fournisseur": {
         "rexel": {
             "nom": "Rexel",
+            "extension": "xlsx",
             "informations":{
                 "quantite":{
                     "colonne": "B",
@@ -32,6 +33,7 @@
         },
         "import_elec": {
             "nom": "Import Elec",
+            "extension": "xlsx",
             "informations":{
                 "quantite":{
                     "colonne": "E",
@@ -47,6 +49,50 @@
                 },
                 "prix":{
                     "colonne": "H",
+                    "valeur": "Prix"
+                }
+            }
+        },
+        "sonepar": {
+            "nom": "Sonepar",
+            "extension": "csv",
+            "informations":{
+                "quantite":{
+                    "colonne": "I",
+                    "valeur": "Quantité"
+                },
+                "description":{
+                    "colonne": "G",
+                    "valeur": "Libellé produit"
+                },
+                "ref_fab":{
+                    "colonne": "F",
+                    "valeur": "Ref. sonepar"
+                },
+                "prix":{
+                    "colonne": "J",
+                    "valeur": "Prix unitaire"
+                }
+            }
+        },
+        "euro_negoce": {
+            "nom": "Euro Negoce",
+            "extension": "csv",
+            "informations":{
+                "quantite":{
+                    "colonne": "F",
+                    "valeur": "Quantite"
+                },
+                "description":{
+                    "colonne": "E",
+                    "valeur": "Designation"
+                },
+                "ref_fab":{
+                    "colonne": "D",
+                    "valeur": "Reference"
+                },
+                "prix":{
+                    "colonne": "G",
                     "valeur": "Prix"
                 }
             }
