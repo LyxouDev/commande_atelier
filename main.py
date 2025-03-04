@@ -82,7 +82,7 @@ if __name__ == "__main__":
     #Export des données en CSV
     print(data)
 
-    data.to_csv('export/espace_affaire.csv', index=False, header=False, sep=';')
+    data.to_csv('export/espace_affaire.csv', index=False, header=False, sep=';', encoding='utf-8-sig')
 
     # Sauvegarde des nouvelles références fournisseur
     if new_ref:
