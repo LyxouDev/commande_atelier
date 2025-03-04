@@ -6,7 +6,7 @@ import module.fournisseur as _frnssr
 if __name__ == "__main__":
 
     # Récupération des données de configuration
-    with open('data/config.json') as config_file:
+    with open('data/config.json', encoding='utf-8') as config_file:
         config = json.load(config_file)
         famille_article = config['famille_article']
 
